@@ -9,8 +9,6 @@ spec:
   selector:
     matchLabels:
       app: mailing-list
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -24,7 +22,7 @@ spec:
           envFrom:
             - secretRef:
                 name: mailing-list
-          image: ghcr.io/bottledcode/mailing-list/runtime:eb537caaea658b0bd9c28ff997055b901eaa34d0
+          image: ghcr.io/bottledcode/mailing-list/runtime:b20981789f39380f2d0f163d246bebd9d9763156
           ports:
             - containerPort: 80
             - containerPort: 443

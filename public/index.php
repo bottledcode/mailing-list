@@ -110,7 +110,7 @@ $json = json_encode($days, JSON_PRETTY_PRINT);
 		</form>
 	</div>
 	<div>
-		<h3>Source available on <a href='https://github.com/bottledcode/mailing-list'>Github</a></h3>
+		<h3 style='margin:0;'>Source available on <a href='https://github.com/bottledcode/mailing-list'>Github</a></h3>
 	</div>
 	<div>
 		<form method='post'>
