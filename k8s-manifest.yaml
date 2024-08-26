@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailing-list
+  labels:
+    app: mailing-list
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailing-list
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mailing-list
+    spec:
+      containers:
+        - name: mailing-list
+          env:
+            - name: SERVER_NAME
+              value: email.catcounter.guru
+          envFrom:
+            - secretRef:
+                name: mailing-list
+          image: ghcr.io/bottledcode/mailing-list/runtime:eb537caaea658b0bd9c28ff997055b901eaa34d0
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: app
+              mountPath: /app/downloads
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: app
+        - name: config
+          persistentVolumeClaim:
+            claimName: caddy-config
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: app
+spec:
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: caddy-config
+spec:
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mailing-list
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: email.catcounter.guru
+    metallb.universe.tf/allow-shared-ip: shared-internal
+    metallb.universe.tf/ip-allocated-from-pool: external
+spec:
+  selector:
+    app: mailing-list
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: https
+    - protocol: UDP
+      port: 443
+      targetPort: 443
+      name: https3
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
+  ipFamilies:
+    - IPv6
+    - IPv4

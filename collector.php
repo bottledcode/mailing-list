@@ -36,8 +36,8 @@ const DOWNLOAD_DIR = __DIR__ . '/downloads/';
 $base = 'https://news-web.php.net';
 $url = "https://news-web.php.net/php.internals";
 
-$range = Weeks(32);
-$window = Weeks(4);
+$range = Weeks(52);
+$window = Days(365);
 $start = (new DateTimeImmutable('tomorrow'))->sub(($range->add($window->multiply(2))->toDateInterval()));
 $stats = new Stats();
 

@@ -30,6 +30,9 @@ if ($range < 1 || $range > 52) {
 }
 $range = Weeks($range);
 $window = $_GET['window'] ?? 14;
+if ($window < 1 || $window > 365) {
+	$window = 14;
+}
 $window = Days($window);
 
 $start = (new DateTimeImmutable('tomorrow'))->sub(($range->add($window->multiply(2))->toDateInterval()));
@@ -83,7 +86,7 @@ $json = json_encode($days, JSON_PRETTY_PRINT);
 <head>
 	<meta charset='UTF-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<title>Posting Ratios Plot</title>
+	<title>Posting Ratios</title>
 	<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 	<script src='https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns'></script>
 </head>
@@ -105,6 +108,9 @@ $json = json_encode($days, JSON_PRETTY_PRINT);
 			<input type='number' id='window' name='window' value='<?= $window->as(TimeUnit::Days) ?>' min='1' max='365' required>
 			<button type='submit'>Update</button>
 		</form>
+	</div>
+	<div>
+		<h3>Source available on <a href='https://github.com/bottledcode/mailing-list'>Github</a></h3>
 	</div>
 	<div>
 		<form method='post'>
