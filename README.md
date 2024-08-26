@@ -22,3 +22,8 @@ This tool allows you to see some stats for a mailing list.
 2. Wait for GitHub Actions to build the production version
 3. Update `k8s-manifest.yaml` with the current commit hash
 4. Apply the manifest to the Kubernetes cluster
+
+### License
+
+This tool is licensed to Robert Landers, all rights reserved.
+You ARE NOT allowed to use it for any purpose beyond your own research and personal use.
