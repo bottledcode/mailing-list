@@ -6,3 +6,6 @@ services:
       - "443:443"
     volumes:
       - .:/app
+    environment:
+      SALT: "somesalt"
+      UNSAFE_EMAILS: "1"
