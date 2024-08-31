@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$email = $_POST['email'];
 	$hash = md5($email . (getenv('SALT') ?? ''), true);
-	$hash[6] = chr(ord($hash[6]) & 0x0f | 0x40);
-	$hash[8] = chr(ord($hash[8]) & 0x3f | 0x80);
+	$hash[6] = chr(ord($hash[6]) & 0x0F | 0x40);
+	$hash[8] = chr(ord($hash[8]) & 0x3F | 0x80);
 	$uuid = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($hash), 4));
 	$existing = json_decode($_COOKIE['knownEmails'] ?? '[]', true, 512, JSON_THROW_ON_ERROR);
 	$existing[$email] = '';
@@ -18,11 +18,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 const DOWNLOAD_DIR = __DIR__ . '/../downloads/';
 
-use Withinboredom\MailingList\Downloader;use Withinboredom\MailingList\Stats;use Withinboredom\Time\TimeUnit;use function Withinboredom\Time\Days;use function Withinboredom\Time\Weeks;
+use Withinboredom\MailingList\Downloader;
+use Withinboredom\MailingList\Stats;
+use Withinboredom\Time\TimeUnit;
+
+use function Withinboredom\Time\Days;
+use function Withinboredom\Time\Weeks;
 
 $base = 'https://news-web.php.net';
-$url = "https://news-web.php.net/php.internals";
-
+$url = 'https://news-web.php.net/php.internals';
 
 $range = $_GET['range'] ?? 6;
 if ($range < 1 || $range > 52) {
@@ -51,27 +55,27 @@ do {
 } while ($data->startTimestamp > $start->getTimestamp());
 
 $days = [];
-for($i = 0; $i < $range->as(TimeUnit::Days); $i++) {
+for ($i = 0; $i < $range->as(TimeUnit::Days); $i++) {
 	$start = new DateTimeImmutable("tomorrow - $i day");
 	$days[$start->format('Y-m-d')] = $stats->getStats($window, $start);
 }
 
 $cutoff = 10;
 $ok = [];
-foreach($days as $day => $data) {
-	foreach($data as $email => $count) {
-		if($ok[$email] ?? false) {
+foreach ($days as $day => $data) {
+	foreach ($data as $email => $count) {
+		if ($ok[$email] ?? false) {
 			continue;
 		}
-		if($count > $cutoff) {
+		if ($count > $cutoff) {
 			$ok[$email] = true;
 		}
 	}
 }
 
-foreach($days as $day => $data) {
-	foreach($data as $email => $count) {
-		if($ok[$email] ?? false) {
+foreach ($days as $day => $data) {
+	foreach ($data as $email => $count) {
+		if ($ok[$email] ?? false) {
 			continue;
 		}
 		unset($days[$day][$email]);
@@ -79,7 +83,6 @@ foreach($days as $day => $data) {
 }
 
 $json = json_encode($days, JSON_PRETTY_PRINT);
-
 
 ?><!DOCTYPE html>
 <html lang='en'>

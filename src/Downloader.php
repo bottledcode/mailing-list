@@ -7,14 +7,14 @@ use function Withinboredom\Time\Seconds;
 
 class Downloader
 {
-
 	public int $startTimestamp;
+
 	public int $endTimestamp;
 
 	/**
-	 * @param array<Email> $emails
+	 * @param  array<Email>  $emails
 	 */
-	public function __construct(public array $emails, public string|null $previous = null)
+	public function __construct(public array $emails, public ?string $previous = null)
 	{
 		$this->endTimestamp = array_reduce($emails, fn($carry, $email) => max($carry, $email->time), 0);
 		$this->startTimestamp = array_reduce(
@@ -33,8 +33,8 @@ class Downloader
 			$url = str_replace($id, $new, $url);
 		}
 
-		if (!$force && file_exists(DOWNLOAD_DIR . basename($url))) {
-			if (!is_numeric($id)) {
+		if (! $force && file_exists(DOWNLOAD_DIR . basename($url))) {
+			if (! is_numeric($id)) {
 				$createdAt = filectime(DOWNLOAD_DIR . basename($url));
 				if ((Seconds(time() - $createdAt) > Hours(2))) {
 					return self::download($url, force: true);
@@ -53,12 +53,14 @@ class Downloader
 		return self::parse($data);
 	}
 
-	private static function doActualDownload(string $url, string $file): string {
+	private static function doActualDownload(string $url, string $file): string
+	{
 		flock($fp = fopen($file . '_download', 'wb'), LOCK_EX);
 		$data = file_get_contents($url);
 		file_put_contents($file, $data);
 		flock($fp, LOCK_UN);
 		fclose($fp);
+
 		return $data;
 	}
 
@@ -78,7 +80,7 @@ class Downloader
 				$prev = substr($line, $start, $end - $start);
 			}
 
-			if (!str_contains($line, 'vcard')) {
+			if (! str_contains($line, 'vcard')) {
 				continue;
 			}
 
@@ -110,7 +112,7 @@ class Downloader
 			$date = substr($date, strpos($date, ',') + 2);
 			$date = strtotime($date);
 
-			$emails[$id] = new Email((int)$id, $email, $date);
+			$emails[$id] = new Email((int) $id, $email, $date);
 		}
 
 		return new self($emails, $prev ?? null);

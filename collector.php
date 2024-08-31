@@ -2,7 +2,6 @@
 
 use Withinboredom\MailingList\Downloader;
 use Withinboredom\MailingList\Stats;
-
 use Withinboredom\Time\TimeUnit;
 
 use function Withinboredom\Time\Days;
@@ -19,7 +18,7 @@ function download(string $url, bool $force = false): Downloader
 		$url = str_replace($id, $new, $url);
 	}
 
-	if (!$force && file_exists(__DIR__ . '/downloads/' . basename($url))) {
+	if (! $force && file_exists(__DIR__ . '/downloads/' . basename($url))) {
 		$data = file_get_contents(__DIR__ . '/downloads/' . basename($url));
 	} else {
 		sleep(2);
@@ -28,13 +27,14 @@ function download(string $url, bool $force = false): Downloader
 			file_put_contents(__DIR__ . '/downloads/' . basename($url), $data);
 		}
 	}
+
 	return Downloader::parse($data);
 }
 
 const DOWNLOAD_DIR = __DIR__ . '/downloads/';
 
 $base = 'https://news-web.php.net';
-$url = "https://news-web.php.net/php.internals";
+$url = 'https://news-web.php.net/php.internals';
 
 $range = Weeks(52);
 $window = Days(365);
@@ -62,7 +62,7 @@ $top = $stats->getStats($window, new DateTimeImmutable('now'));
 var_dump(array_slice($top, 0, 10));
 
 $days = [];
-for($i = 0; $i < $range->as(TimeUnit::Days); $i++) {
+for ($i = 0; $i < $range->as(TimeUnit::Days); $i++) {
 	$start = new DateTimeImmutable("tomorrow - $i day");
 	$days[$start->format('Y-m-d')] = $stats->getStats($window, $start);
 }
@@ -70,20 +70,20 @@ for($i = 0; $i < $range->as(TimeUnit::Days); $i++) {
 $cutoff = 10;
 
 $ok = [];
-foreach($days as $day => $data) {
-	foreach($data as $email => $count) {
-		if($ok[$email] ?? false) {
+foreach ($days as $day => $data) {
+	foreach ($data as $email => $count) {
+		if ($ok[$email] ?? false) {
 			continue;
 		}
-		if($count > $cutoff) {
+		if ($count > $cutoff) {
 			$ok[$email] = true;
 		}
 	}
 }
 
-foreach($days as $day => $data) {
-	foreach($data as $email => $count) {
-		if($ok[$email] ?? false) {
+foreach ($days as $day => $data) {
+	foreach ($data as $email => $count) {
+		if ($ok[$email] ?? false) {
 			continue;
 		}
 		unset($days[$day][$email]);

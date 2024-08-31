@@ -25,5 +25,5 @@ This tool allows you to see some stats for a mailing list.
 
 ### License
 
-This tool is licensed to Robert Landers, all rights reserved.
-You ARE NOT allowed to use it for any purpose beyond your own research and personal use.
+This tool is licensed to Robert Landers, all rights reserved. You ARE NOT allowed to use it for any purpose beyond your
+own research and personal use.

@@ -8,12 +8,13 @@ use Withinboredom\Time\TimeUnit;
 class Stats
 {
 	public array $stats = [];
+
 	public int $totalEmails = 0;
 
 	public function addStats(Email $email): void
 	{
 		$this->stats[$email->address][$email->id] = $email->time;
-		++$this->totalEmails;
+		$this->totalEmails++;
 	}
 
 	public function renderTopEmails(): string
@@ -21,9 +22,12 @@ class Stats
 		arsort($this->stats);
 		$top = array_slice($this->stats, 0, 10);
 		$top = array_map(fn($emails) => count($emails), $top);
-		$top = array_map(fn($email, $count) => "$email: " . number_format($count / $this->totalEmails * 100, 2),
+		$top = array_map(
+			fn($email, $count) => "$email: " . number_format($count / $this->totalEmails * 100, 2),
 			array_keys($top),
-			$top);
+			$top,
+		);
+
 		return implode("\n", $top);
 	}
 
@@ -38,22 +42,23 @@ class Stats
 		fclose($history);
 	}
 
-	public function getStats(Time $windowSize, \DateTimeImmutable $from): array {
+	public function getStats(Time $windowSize, \DateTimeImmutable $from): array
+	{
 		$currentTime = $from->getTimestamp();
 		$totalEmails = 0;
 		$start = $currentTime - $windowSize->as(TimeUnit::Seconds);
-		foreach($this->stats as $address => $emails) {
-			foreach($emails as $time) {
-				if($time > $start && $time < $currentTime) {
+		foreach ($this->stats as $address => $emails) {
+			foreach ($emails as $time) {
+				if ($time > $start && $time < $currentTime) {
 					$totalEmails++;
 				}
 			}
 		}
 
 		$userCounts = [];
-		foreach($this->stats as $address => $emails) {
+		foreach ($this->stats as $address => $emails) {
 			$userCounts[$address] = 0;
-			foreach($emails as $time) {
+			foreach ($emails as $time) {
 				if ($time > $start && $time < $currentTime) {
 					$userCounts[$address]++;
 				}
