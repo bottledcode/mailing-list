@@ -29,7 +29,7 @@ if ($range < 1 || $range > 52) {
 	$range = 6;
 }
 $range = Weeks($range);
-$window = $_GET['window'] ?? 14;
+$window = $_GET['window'] ?? 7;
 if ($window < 1 || $window > 365) {
 	$window = 14;
 }
