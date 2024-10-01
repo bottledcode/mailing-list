@@ -13,11 +13,10 @@
     }
   ],
   "require": {
-    "withinboredom/time": "5.*",
-    "johnbacon/stout": "^1.16"
-  }
-  ,
+    "withinboredom/time": "5.*"
+  },
   "require-dev": {
+    "johnbacon/stout": "^1.16.1",
     "roave/security-advisories": "dev-latest"
   },
   "scripts": {
