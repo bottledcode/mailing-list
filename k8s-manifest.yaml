@@ -22,7 +22,7 @@ spec:
           envFrom:
             - secretRef:
                 name: mailing-list
-          image: ghcr.io/bottledcode/mailing-list/runtime:17271b2bd475ac9a1ca226afa141b315ea3391ab
+          image: ghcr.io/bottledcode/mailing-list/runtime:59684bf594094d76a460496daa82b71e44bd91f7
           ports:
             - containerPort: 80
             - containerPort: 443
