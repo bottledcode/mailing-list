@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1.4.2-bookworm
+FROM dunglas/frankenphp:1.4.4-bookworm
 
 RUN install-php-extensions @composer
 
