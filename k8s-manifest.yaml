@@ -68,7 +68,7 @@ apiVersion: v1
 metadata:
   name: mailing-list
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: email.catcounter.guru
+    external-dns.alpha.kubernetes.io/hostname: email.bottled.codes
     metallb.universe.tf/allow-shared-ip: shared-internal
     metallb.universe.tf/ip-allocated-from-pool: external
 spec:
