@@ -9,6 +9,8 @@ spec:
   selector:
     matchLabels:
       app: mailing-list
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -18,11 +20,13 @@ spec:
         - name: mailing-list
           env:
             - name: SERVER_NAME
-              value: email.catcounter.guru
+              value: email.bottled.codes
+            - name: UNSAFE_EMAILS
+              value: 'yes'
           envFrom:
             - secretRef:
                 name: mailing-list
-          image: ghcr.io/bottledcode/mailing-list/runtime:59684bf594094d76a460496daa82b71e44bd91f7
+          image: ghcr.io/bottledcode/mailing-list/runtime:ad373a3a44173d40aac446d61fbceb05282892e6
           ports:
             - containerPort: 80
             - containerPort: 443
