@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "withinboredom/time": "5.*"
+    "withinboredom/time": "6.*"
   },
   "require-dev": {
     "johnbacon/stout": "^1.16.1",
