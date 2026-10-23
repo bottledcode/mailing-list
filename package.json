@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.8",
+    "lint-staged": "^17.6.0",
     "prettier": ">=3"
   },
   "scripts": {
